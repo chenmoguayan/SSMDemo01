@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 配置自动扫描包 -->
+    <context:component-scan base-package="org.qingqiao"/>
+    <!-- 配置springmvc的mapping和adaptor -->
+    <mvc:annotation-driven/>
+    <!-- 放行静态资源文件 -->
+    <mvc:default-servlet-handler/>
+    <!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="resolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!-- 数据源 -->
+    <bean class="org.apache.ibatis.datasource.pooled.PooledDataSource" id="dataSource">
+        <property name="url" value="jdbc:mysql:///java220212"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+    </bean>
+    <!-- session工厂 -->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+        <property name="typeAliasesPackage" value="org.qingqiao.bean"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 配置mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
+        <property name="basePackage" value="org.qingqiao.mapper"/>
+    </bean>
+</beans>
